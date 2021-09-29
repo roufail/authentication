@@ -9,4 +9,6 @@ Route::group(['middleware' => 'admin'],function(){
     Route::get('/dashboard', 'dashboardController@index')->name('dashboard');
     Route::post('/logout', 'Auth\LoginController@logout')->name("logout");
 
+
+    Route::resource("/admins",AdminsController::class);
 });
