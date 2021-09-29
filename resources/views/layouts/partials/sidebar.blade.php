@@ -37,9 +37,9 @@
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
 
 
-                <li class="nav-item menu-open">
-                    <a href="#" class="nav-link active">
-                        <i class="fas fa-user-shield nav-icon"></i>
+                <li class="nav-item @if (Route::is('admin.admins.index') || Route::is('admin.admins.create')) menu-open @endif">
+                    <a href="#" class="nav-link @if (Route::is('admin.admins.index') || Route::is('admin.admins.create')) active @endif"">
+                        <i class=" fas fa-user-shield nav-icon"></i>
                         <p>
                             Admins
                             <i class="right fas fa-angle-left"></i>
@@ -47,14 +47,14 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="#" class="nav-link active">
+                            <a href="{{ route('admin.admins.index') }}" class="nav-link @if (Route::is('admin.admins.index')) active @endif">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Admins</p>
                             </a>
                         </li>
 
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="{{ route('admin.admins.create') }}" class="nav-link @if (Route::is('admin.admins.create')) active @endif">
                                 <i class="fas fa-user-shield nav-icon"></i>
                                 <p>Create Admin</p>
                             </a>

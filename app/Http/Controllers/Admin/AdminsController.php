@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Admin;
+use App\Http\Requests\Admins\AdminFormRequest;
 class AdminsController extends Controller
 {
     /**
@@ -14,8 +15,7 @@ class AdminsController extends Controller
      */
     public function index()
     {
-
-        $admins = Admin::paginate(1);
+        $admins = Admin::paginate(10);
         return view("admin.admins.list",compact('admins'));
     }
 
@@ -24,9 +24,9 @@ class AdminsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Admin $admin)
     {
-        //
+        return view("admin.admins.form",compact("admin"));
     }
 
     /**
@@ -35,9 +35,15 @@ class AdminsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(AdminFormRequest $request)
     {
-        //
+        $admin = Admin::create($request->validated());
+
+        if($admin){
+            return redirect()->route('admin.admins.index')->with(['success' => 'Admin created successfully!']);
+        }
+        return redirect()->route('admin.admins.index')->withErrors(['error' => 'Something went wrong!']);
+ 
     }
 
     /**
@@ -46,10 +52,10 @@ class AdminsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
-        //
-    }
+    // public function show($id)
+    // {
+    //     //
+    // }
 
     /**
      * Show the form for editing the specified resource.
@@ -57,9 +63,9 @@ class AdminsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Admin $admin)
     {
-        //
+        return view("admin.admins.form",compact("admin"));
     }
 
     /**
@@ -69,9 +75,24 @@ class AdminsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(AdminFormRequest $request,Admin $admin)
     {
-        //
+        $fileds = $request->validated();
+
+        if ($fileds['password']) {
+	        unset($request['password']);
+		}
+
+
+        $admin = $admin->update($fileds);
+        
+
+
+        if($admin){
+            return redirect()->route('admin.admins.index')->with(['success' => 'Admin updated successfully!']);
+        }
+        return redirect()->back()->withErrors(['error' => 'Something went wrong!']);
+
     }
 
     /**

@@ -7,7 +7,9 @@
 @section('content')
 
     <div class="content">
-
+        <div class="float-right">
+            <a href="{{ route('admin.admins.create') }}"><i class="fas fa-plus"></i></a>
+        </div>
         <table class="table table-bordered">
             <thead>
                 <tr>
@@ -38,14 +40,14 @@
                     </tr>
                 @endforeach
             </tbody>
-            <tfoot>
+            {{-- <tfoot>
                 <tr>
                     <th>Name</th>
                     <th>Email</th>
                     <th>Role</th>
                     <th>Actions</th>
                 </tr>
-            </tfoot>
+            </tfoot> --}}
         </table>
         <div>
             {{ $admins->render('layouts.partials.pagination') }}
