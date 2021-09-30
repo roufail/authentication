@@ -4,9 +4,10 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Admin;
-use App\Http\Requests\Admins\AdminFormRequest;
-class AdminsController extends Controller
+use App\Models\User;
+use App\Http\Requests\Admins\UserFormRequest;
+
+class UsersController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,8 +16,8 @@ class AdminsController extends Controller
      */
     public function index()
     {
-        $admins = Admin::paginate(10);
-        return view("admin.admins.list",compact('admins'));
+        $users = User::paginate(10);
+        return view("admin.users.list",compact('users'));
     }
 
     /**
@@ -24,9 +25,9 @@ class AdminsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(Admin $admin)
+    public function create(User $user)
     {
-        return view("admin.admins.form",compact("admin"));
+        return view("admin.users.form",compact("user"));
     }
 
     /**
@@ -35,15 +36,14 @@ class AdminsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(AdminFormRequest $request)
+    public function store(UserFormRequest $request)
     {
-        $admin = Admin::create($request->validated());
+        $user = User::create($request->validated());
 
-        if($admin){
-            return redirect()->route('admin.admins.index')->with(['success' => 'Admin created successfully!']);
+        if($user){
+            return redirect()->route('admin.users.index')->with(['success' => 'User created successfully!']);
         }
-        return redirect()->route('admin.admins.index')->withErrors(['error' => 'Something went wrong!']);
- 
+        return redirect()->route('admin.users.index')->withErrors(['error' => 'Something went wrong!']);
     }
 
     /**
@@ -63,9 +63,9 @@ class AdminsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Admin $admin)
+    public function edit(User $user)
     {
-        return view("admin.admins.form",compact("admin"));
+        return view("admin.users.form",compact("user"));
     }
 
     /**
@@ -75,16 +75,21 @@ class AdminsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(AdminFormRequest $request,Admin $admin)
+    public function update(UserFormRequest $request, User $user)
     {
         $fileds = $request->validated();
+
         if (!$fileds['password']) {
 	        unset($fileds['password']);
 		}
-        $admin = $admin->update($fileds);
-        if($admin){
-            return redirect()->route('admin.admins.index')->with(['success' => 'Admin updated successfully!']);
+        
+
+        $user = $user->update($fileds);
+        
+        if($user){
+            return redirect()->route('admin.users.index')->with(['success' => 'User updated successfully!']);
         }
+
         return redirect()->back()->withErrors(['error' => 'Something went wrong!']);
     }
 
@@ -94,11 +99,11 @@ class AdminsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Admin $admin)
+    public function destroy(User $user)
     {
-       if($admin->delete()){
-           return redirect()->route('admin.admins.index')->with(['success' => 'Admin deleted successfully!']);
-       }
-       return redirect()->route('admin.admins.index')->withErrors(['error' => 'Something went wrong!']);
-    }
+        if($user->delete()){
+            return redirect()->route('admin.users.index')->with(['success' => 'User deleted successfully!']);
+        }
+        return redirect()->route('admin.users.index')->withErrors(['error' => 'Something went wrong!']);
+     }
 }

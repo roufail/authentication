@@ -39,7 +39,7 @@
 
                 <li class="nav-item @if (Route::is('admin.admins.index') || Route::is('admin.admins.create')) menu-open @endif">
                     <a href="#" class="nav-link @if (Route::is('admin.admins.index') || Route::is('admin.admins.create')) active @endif"">
-                        <i class=" fas fa-user-shield nav-icon"></i>
+                        <i class="                              fas fa-user-shield nav-icon"></i>
                         <p>
                             Admins
                             <i class="right fas fa-angle-left"></i>
@@ -65,8 +65,11 @@
 
 
 
-                <li class="nav-item menu-open">
-                    <a href="#" class="nav-link active">
+
+
+
+                <li class="nav-item @if (Route::is('admin.users.index') || Route::is('admin.users.create')) menu-open @endif">
+                    <a href="#" class="nav-link @if (Route::is('admin.users.index') || Route::is('admin.users.create')) active @endif">
                         <i class="nav-icon fas fa-users"></i>
                         <p>
                             Users
@@ -75,21 +78,48 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="#" class="nav-link active">
-                                <i class="far fa-circle nav-icon"></i>
+                            <a href="{{ route('admin.users.index') }}" class="nav-link @if (Route::is('admin.users.index')) active @endif">
+                                <i class="nav-icon fas fa-users"></i>
                                 <p>Users</p>
                             </a>
-                        </li>
 
+                        </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="{{ route('admin.users.create') }}" class="nav-link @if (Route::is('admin.users.create')) active @endif">
                                 <i class="fas fa-user-plus nav-icon"></i>
                                 <p>Create User</p>
                             </a>
                         </li>
-
                     </ul>
                 </li>
+
+
+                <li class="nav-item @if (Route::is('admin.roles.index') || Route::is('admin.roles.create')) menu-open @endif">
+                    <a href="#" class="nav-link @if (Route::is('admin.roles.index') || Route::is('admin.roles.create')) active @endif">
+                        <i class="nav-icon fas fa-user-tag"></i>
+                        <p>
+                            Roles
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('admin.roles.index') }}" class="nav-link @if (Route::is('admin.roles.index')) active @endif">
+                                <i class="nav-icon fas fa-user-tag"></i>
+                                <p>Roles</p>
+                            </a>
+
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('admin.roles.create') }}" class="nav-link @if (Route::is('admin.roles.create')) active @endif">
+                                <i class="nav-icon fas fa-user-tag"></i>
+
+                                <p>Create Roles</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
 
                 {{-- <li class="nav-item">
                     <a href="#" class="nav-link">
