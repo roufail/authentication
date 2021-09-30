@@ -38,12 +38,10 @@ class AdminsController extends Controller
     public function store(AdminFormRequest $request)
     {
         $admin = Admin::create($request->validated());
-
         if($admin){
             return redirect()->route('admin.admins.index')->with(['success' => 'Admin created successfully!']);
         }
         return redirect()->route('admin.admins.index')->withErrors(['error' => 'Something went wrong!']);
- 
     }
 
     /**

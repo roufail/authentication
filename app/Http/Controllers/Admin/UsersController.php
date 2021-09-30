@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Http\Requests\Admins\UserFormRequest;
+use Spatie\Permission\Models\Role;
 
 class UsersController extends Controller
 {
@@ -27,7 +28,8 @@ class UsersController extends Controller
      */
     public function create(User $user)
     {
-        return view("admin.users.form",compact("user"));
+        $roles = Role::pluck('name','id');
+        return view("admin.users.form",compact("user","roles"));
     }
 
     /**
@@ -41,6 +43,7 @@ class UsersController extends Controller
         $user = User::create($request->validated());
 
         if($user){
+            $user->assignRole($request->role);
             return redirect()->route('admin.users.index')->with(['success' => 'User created successfully!']);
         }
         return redirect()->route('admin.users.index')->withErrors(['error' => 'Something went wrong!']);
@@ -84,9 +87,10 @@ class UsersController extends Controller
 		}
         
 
-        $user = $user->update($fileds);
+        $user->update($fileds);
         
         if($user){
+            $user->assignRole($request->role);
             return redirect()->route('admin.users.index')->with(['success' => 'User updated successfully!']);
         }
 

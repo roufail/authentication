@@ -39,7 +39,11 @@
 
                 <li class="nav-item @if (Route::is('admin.admins.index') || Route::is('admin.admins.create')) menu-open @endif">
                     <a href="#" class="nav-link @if (Route::is('admin.admins.index') || Route::is('admin.admins.create')) active @endif"">
-                        <i class="                              fas fa-user-shield nav-icon"></i>
+                        <i class="
+                        
+                        
+                        
+                                                                            fas fa-user-shield nav-icon"></i>
                         <p>
                             Admins
                             <i class="right fas fa-angle-left"></i>
@@ -117,6 +121,15 @@
                                 <p>Create Roles</p>
                             </a>
                         </li>
+
+
+
+
+
+
+
+
+
                     </ul>
                 </li>
 
@@ -132,6 +145,19 @@
                 </li> --}}
 
 
+
+                <li class="nav-item">
+                    <a href="{{ route('admin.logout') }}" class="nav-link" onclick="event.preventDefault();
+                    document.getElementById('logout-form').submit();">
+                        <i class="nav-icon fas fa-sign-out-alt"></i>
+                        <p>
+                            logout
+                        </p>
+                    </a>
+                    <form id="logout-form" action="{{ route('admin.logout') }}" method="POST" class="d-none">
+                        @csrf
+                    </form>
+                </li>
 
             </ul>
         </nav>

@@ -8,27 +8,25 @@
 
     <div class="content">
         <div class="float-right">
-            <a href="{{ route('admin.admins.create') }}"><i class="fas fa-plus"></i></a>
+            <a href="{{ route('admin.roles.create') }}"><i class="fas fa-plus"></i></a>
         </div>
         <table class="table table-bordered">
             <thead>
                 <tr>
                     <th>Name</th>
-                    <th>Email</th>
                     <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach ($admins as $admin)
+                @foreach ($roles as $role)
                     <tr>
-                        <td>{{ $admin->name }}</td>
-                        <td>{{ $admin->email }}</td>
+                        <td>{{ $role->name }}</td>
                         <td>
-                            <a class="btn btn-primary float-left" href="{{ route('admin.admins.edit', $admin->id) }}"><i
+                            <a class="btn btn-primary float-left" href="{{ route('admin.roles.edit', $role->id) }}"><i
                                     class="fas fa-edit"></i></a>
 
                             <div class="ms-1"></div>
-                            <form method="POST" action="{{ route('admin.admins.destroy', $admin->id) }}">
+                            <form method="POST" action="{{ route('admin.roles.destroy', $role->id) }}">
                                 @csrf
                                 @method('delete')
                                 <button class="delete-btn btn btn-primary float-left" href="#"><i
@@ -48,7 +46,7 @@
             </tfoot> --}}
         </table>
         <div>
-            {{ $admins->render('layouts.partials.pagination') }}
+            {{ $roles->render('layouts.partials.pagination') }}
         </div>
     </div>
 @endsection

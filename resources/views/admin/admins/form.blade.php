@@ -30,13 +30,6 @@
                         value="{{ old('email') ? old('email') : $admin->email }}">
                 </div>
 
-                <div class="form-group">
-                    <label for="email">Role</label>
-                    <input type="text" class="form-control" name="role" id="role" placeholder="Role"
-                        value="{{ old('role') ? old('role') : $admin->role }}">
-                </div>
-
-
                 <div class=" form-group">
                     <label for="password">Password</label>
                     <input type="password" class="form-control" name="password" id="password" placeholder="Password">

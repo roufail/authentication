@@ -5,6 +5,11 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
+
+use App\Http\Requests\Admins\RoleFormRequest;
+
 class RolesController extends Controller
 {
     /**
@@ -14,7 +19,8 @@ class RolesController extends Controller
      */
     public function index()
     {
-        //
+        $roles = Role::paginate(10);
+        return view("admin.roles.list",compact('roles'));
     }
 
     /**
@@ -22,9 +28,10 @@ class RolesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Role $role)
     {
-        //
+        $permissions = [];
+        return view("admin.roles.form",compact("role","permissions"));
     }
 
     /**
@@ -33,9 +40,14 @@ class RolesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(RoleFormRequest $request)
     {
-        //
+        $role = Role::create(['name' => $request->name]);
+        if($role){
+            $role->syncPermissions($request->permissions);
+            return redirect()->route('admin.roles.index')->with(['success' => 'Role created successfully!']);
+        }
+        return redirect()->route('admin.roles.index')->withErrors(['error' => 'Something went wrong!']);
     }
 
     /**
@@ -44,10 +56,10 @@ class RolesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
-        //
-    }
+    // public function show($id)
+    // {
+    //     //
+    // }
 
     /**
      * Show the form for editing the specified resource.
@@ -55,9 +67,10 @@ class RolesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Role $role)
     {
-        //
+        $permissions = $role->permissions->pluck('name')->toArray();
+        return view("admin.roles.form",compact("role","permissions"));
     }
 
     /**
@@ -67,9 +80,14 @@ class RolesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(RoleFormRequest $request, Role $role)
     {
-        //
+        $role->update(['name' => $request->name]);
+        if($role){
+            $role->syncPermissions($request->permissions);
+            return redirect()->route('admin.roles.index')->with(['success' => 'Role updated successfully!']);
+        }
+        return redirect()->route('admin.roles.index')->withErrors(['error' => 'Something went wrong!']);
     }
 
     /**

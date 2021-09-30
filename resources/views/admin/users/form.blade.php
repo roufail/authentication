@@ -30,12 +30,20 @@
                         value="{{ old('email') ? old('email') : $user->email }}">
                 </div>
 
-                <div class="form-group">
-                    <label for="email">Role</label>
-                    <input type="text" class="form-control" name="role" id="role" placeholder="Role"
-                        value="{{ old('role') ? old('role') : $user->role }}">
-                </div>
+                @if ($roles->count())
 
+                    <div class="form-group">
+                        <label for="email">Role</label>
+                        {{-- <input type="text" class="form-control" name="role" id="role" placeholder="Role"
+                        value="{{ old('role') ? old('role') : $user->role }}"> --}}
+                        <select name="role" class="form-select form-control">
+                            <option value="">--- Select Role ---</option>
+                            @foreach ($roles as $role)
+                                <option @if ((old('role') && old('role') == $role) || $user->role == $role) selected @endif value="{{ $role }}">{{ $role }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                @endif
 
                 <div class=" form-group">
                     <label for="password">Password</label>
