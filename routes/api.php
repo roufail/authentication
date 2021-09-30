@@ -14,6 +14,26 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
+
+
+
+Route::group(['namespace' => 'App\Http\Controllers\Api\Admin'],function(){
+    
+    Route::post('/login', 'Auth\LoginController@login');
+    Route::post('/register', 'Auth\RegisterController@register');
+
+    Route::group(['middleware' => 'jwt.verify'], function(){
+        Route::get('/', 'DashboardController@index');
+        Route::get('/dashboard', 'DashboardController@index');
+        Route::post('/logout', 'Auth\LoginController@logout');
+        Route::resource("/admins",AdminsController::class);
+        Route::resource("/users",UsersController::class);
+        Route::resource("/roles",RolesController::class);
+    });
+
 });
+
+

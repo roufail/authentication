@@ -37,7 +37,11 @@ class AdminsController extends Controller
      */
     public function store(AdminFormRequest $request)
     {
-        $admin = Admin::create($request->validated());
+        
+        $fileds = $request->validated();
+        $fileds['password'] =  bcrypt($fileds['password']);
+        $admin = Admin::create($fileds);
+
         if($admin){
             return redirect()->route('admin.admins.index')->with(['success' => 'Admin created successfully!']);
         }
@@ -78,7 +82,9 @@ class AdminsController extends Controller
         $fileds = $request->validated();
         if (!$fileds['password']) {
 	        unset($fileds['password']);
-		}
+		} else {
+            $fileds['password'] = bcrypt($fileds['password']);
+        }
         $admin = $admin->update($fileds);
         if($admin){
             return redirect()->route('admin.admins.index')->with(['success' => 'Admin updated successfully!']);
