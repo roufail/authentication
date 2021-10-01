@@ -22,7 +22,7 @@ class JwtMiddleware
         if ($request->headers->has('Authorization')) {
             try {
                 $request->headers->set('Authorization', $request->headers->get('Authorization'));
-                $user = JWTAuth::parseToken()->authenticate();
+                $authenticate = JWTAuth::parseToken()->authenticate();
             } catch (Exception $e) {
 
                 if ($e instanceof \Tymon\JWTAuth\Exceptions\TokenInvalidException){
@@ -35,6 +35,9 @@ class JwtMiddleware
 
             } 
             return $next($request);
+        }else {
+            return response()->json(['error' => 'unauthorized']);
+
         }
 
     }

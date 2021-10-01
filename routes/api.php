@@ -20,8 +20,8 @@ use Illuminate\Support\Facades\Route;
 
 
 
-Route::group(['namespace' => 'App\Http\Controllers\Api\Admin'],function(){
-    
+Route::group(['namespace' => 'App\Http\Controllers\Api\Admin','prefix' => 'admin'],function(){
+
     Route::post('/login', 'Auth\LoginController@login');
     Route::post('/register', 'Auth\RegisterController@register');
 
