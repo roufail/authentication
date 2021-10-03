@@ -32,7 +32,7 @@ Route::group(['namespace' => 'App\Http\Controllers\Api\Admin','prefix' => 'admin
         Route::post('/logout', 'Auth\LoginController@logout');
         Route::resource("/admins",AdminsController::class);
         Route::resource("/users",UsersController::class);
-        Route::resource("/roles",RolesController::class);
+        // Route::resource("/roles",RolesController::class);
     });
 
 });

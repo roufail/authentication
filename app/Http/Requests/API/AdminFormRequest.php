@@ -26,7 +26,7 @@ class AdminFormRequest extends FormRequest
         if(request()->admin) {
             $rules =  [
                 'name' => 'required|string',
-                'email' => 'required|email|unique:admins,id,'.request()->admin->id,
+                'email' => 'required|email|unique:admins,id,'.request()->admin,
                 'password' => 'required_with:confirm_password|string|min:8|nullable',
                 'confirm_password' => 'required_with:password|string|same:password|nullable',
             ];

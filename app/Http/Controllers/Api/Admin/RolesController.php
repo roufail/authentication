@@ -4,6 +4,12 @@ namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Resources\Admin\RoleResource;
+use App\Http\Resources\Admin\RoleCollection;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
+
+use App\Http\Requests\Admins\RoleFormRequest;
 
 class RolesController extends Controller
 {
@@ -14,18 +20,10 @@ class RolesController extends Controller
      */
     public function index()
     {
-        //
+        $roles = Role::paginate(10);
+        return $this->response(new RoleCollection($roles),'Roles retrived successfully');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -35,29 +33,19 @@ class RolesController extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
+            $role = Role::where(['name' => $request->name])->get();
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
+            if(!$role->count()) {
+                $role = Role::create(['name' => $request->name]);
+                if($role){
+                    $role->syncPermissions($request->permissions);
+                    return $this->response(new RoleResource($role),'Role created successfully');
+                }
+            }else {
+                return $this->error('This role Already exists');
+            }
+            return $this->error('Something went wrong');
     }
 
     /**
@@ -69,7 +57,20 @@ class RolesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $role = Role::find($id);
+
+        if($role) {
+            $role->update(['name' => $request->name]);
+    
+            if($role){
+                $role->syncPermissions($request->permissions);
+                return $this->response(new RoleResource($role),'Role created successfully');
+            }
+        } else {
+            return $this->error('this role doesn\'t exists');
+        }
+
+        return $this->error('something went wrong');
     }
 
     /**
@@ -80,6 +81,18 @@ class RolesController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $role = Role::find($id);
+
+        if(!$role){
+            return $this->error('Role doesn\'t exists');
+        }
+
+        if($role->delete()){
+            return $this->response([],'Role deleted successfully');
+        }
+
+        return $this->error('something went wrong');
+
+
     }
 }

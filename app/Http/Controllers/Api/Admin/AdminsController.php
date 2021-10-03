@@ -34,7 +34,7 @@ class AdminsController extends Controller
         $fileds = $request->validated();
         $fileds['password'] =  bcrypt($fileds['password']);
         $admin = Admin::create($fileds);
-        return $this->response($admin,'Admins stored successfully');
+        return $this->response(new AdminResource($admin),'Admins stored successfully');
     }
 
 
@@ -55,7 +55,7 @@ class AdminsController extends Controller
         $fileds = $request->validated();
         $fileds['password'] =  bcrypt($fileds['password']);
         $admin->update($fileds);
-        return $this->response($admin,'Admins updated successfully');
+        return $this->response(new AdminResource($admin),'Admins updated successfully');
     }
 
     /**
