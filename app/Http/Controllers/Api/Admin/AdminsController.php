@@ -4,6 +4,10 @@ namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Admin;
+use App\Resource\Admin\AdminResource;
+use App\Http\Resources\Admin\AdminCollection;
+use App\Http\Requests\API\AdminFormRequest;
 
 class AdminsController extends Controller
 {
@@ -14,18 +18,10 @@ class AdminsController extends Controller
      */
     public function index()
     {
-        //
+        $admins = Admin::paginate(10);
+        return $this->response(new AdminCollection($admins),'Admins retrived successfully');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -33,32 +29,14 @@ class AdminsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(AdminFormRequest $request)
     {
-        //
+        $fileds = $request->validated();
+        $fileds['password'] =  bcrypt($fileds['password']);
+        $admin = Admin::create($fileds);
+        return $this->response($admin,'Admins stored successfully');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
@@ -67,9 +45,17 @@ class AdminsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(AdminFormRequest $request, $id)
     {
-        //
+        $admin = Admin::find($id);
+        if(!$admin) {
+            return $this->error('Requested model not found');
+        }
+
+        $fileds = $request->validated();
+        $fileds['password'] =  bcrypt($fileds['password']);
+        $admin->update($fileds);
+        return $this->response($admin,'Admins updated successfully');
     }
 
     /**
@@ -80,6 +66,14 @@ class AdminsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $admin = Admin::find($id);
+
+        if(!$admin) {
+            return $this->error('Requested model not found');
+        }
+
+        if($admin->delete()) {
+            return $this->response(true,'Admin deleted successfully');
+        }
     }
 }

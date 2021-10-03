@@ -68,7 +68,8 @@ class UsersController extends Controller
      */
     public function edit(User $user)
     {
-        return view("admin.users.form",compact("user"));
+        $roles = Role::pluck('name','id');
+        return view("admin.users.form",compact("user","roles"));
     }
 
     /**
@@ -80,13 +81,16 @@ class UsersController extends Controller
      */
     public function update(UserFormRequest $request, User $user)
     {
+
+
         $fileds = $request->validated();
 
         if (!$fileds['password']) {
 	        unset($fileds['password']);
-		}
+		} else {
+            $fileds['password'] = bcrypt($fileds['password']);
+        }
         
-
         $user->update($fileds);
         
         if($user){

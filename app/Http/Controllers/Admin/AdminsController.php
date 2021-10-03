@@ -37,7 +37,6 @@ class AdminsController extends Controller
      */
     public function store(AdminFormRequest $request)
     {
-        
         $fileds = $request->validated();
         $fileds['password'] =  bcrypt($fileds['password']);
         $admin = Admin::create($fileds);

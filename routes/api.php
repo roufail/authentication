@@ -24,10 +24,11 @@ Route::group(['namespace' => 'App\Http\Controllers\Api\Admin','prefix' => 'admin
 
     Route::post('/login', 'Auth\LoginController@login');
     Route::post('/register', 'Auth\RegisterController@register');
+    Route::post("users/login","UsersController@login");
 
     Route::group(['middleware' => 'jwt.verify'], function(){
-        Route::get('/', 'DashboardController@index');
-        Route::get('/dashboard', 'DashboardController@index');
+        // Route::get('/', 'DashboardController@index');
+        // Route::get('/dashboard', 'DashboardController@index');
         Route::post('/logout', 'Auth\LoginController@logout');
         Route::resource("/admins",AdminsController::class);
         Route::resource("/users",UsersController::class);

@@ -40,7 +40,6 @@ class LoginController extends Controller
     public function __construct()
     {
         auth()->shouldUse('admins');
-
         $this->middleware('guest:admins')->except('logout');
     }
 
@@ -49,14 +48,11 @@ class LoginController extends Controller
 
     public function login(Request $request)
     {
-
         $credentials = $request->only('email', 'password');
         $validator = Validator::make($credentials, [
             'email' => 'required|email',
             'password' => 'required|string|min:6|max:50'
         ]);
-
-
         if ($validator->fails()) {
             return response()->json(['error' => $validator->messages()], 200);
         }
@@ -97,11 +93,6 @@ class LoginController extends Controller
         ]);
     }
 
-
-    protected function guard()
-    {
-        return Auth::guard('admins');
-    }
 
 
 }

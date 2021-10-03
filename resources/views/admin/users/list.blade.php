@@ -24,7 +24,7 @@
                     <tr>
                         <td>{{ $user->name }}</td>
                         <td>{{ $user->email }}</td>
-                        <td>{{ $user->roles[0]->name }}</td>
+                        <td>{{ count($user->roles) > 0 ? $user->roles[0]->name : '' }}</td>
                         <td>
                             <a class="btn btn-primary float-left" href="{{ route('admin.users.edit', $user->id) }}"><i
                                     class="fas fa-edit"></i></a>
